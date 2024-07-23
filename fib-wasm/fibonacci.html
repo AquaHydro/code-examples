@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fjb Wasm</title>
+</head>
+
+<body>
+    <p>num: <input type="number" id="num"></p>
+    <p>JS: <span id="JSresultDom"></span></p>
+    <p>Wasm: <span id="WasmresultDom"></span></p>
+    <script src="fibonacci.js"></script>
+    <script>
+        function _fibonacciJS(n) {
+            if (n == 1 || n == 2) {
+                return 1;
+            }
+            return _fibonacciJS(n - 1) + _fibonacciJS(n - 2);
+
+        }
+        num.onchange = () => {
+
+            const jsStart = performance.now();
+            const jsResult = _fibonacciJS(num.value);
+
+            const jsEnd = performance.now();
+            JSresultDom.textContent = ` (JS: ${(jsEnd - jsStart).toFixed(2)}ms)   jsResult: ${jsResult}`;
+
+
+            const wasmStart = performance.now();
+            const wasmResult = Module._fibonacci(num.value);
+            const wasmEnd = performance.now();
+            WasmresultDom.textContent = ` (Wasm: ${(wasmEnd - wasmStart).toFixed(2)}ms)   wasmResult: ${wasmResult}`;
+        }
+    </script>
+</body>
+
+</html>
